@@ -6,6 +6,6 @@ const router = express.Router();
 const upload = multer({ dest: 'uploads/' });
 
 // Contact routes
-router.post('/contact', upload.single('avatar'), uploadCSV)
+router.post('/upload', upload.single('file'), uploadCSV)
 
 export default router;
