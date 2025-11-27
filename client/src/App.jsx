@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import {useState, useRef} from 'react'
 import './App.css'
+import {uploadContact} from "../services/contact.js";
 
 function App() {
-  const [count, setCount] = useState(0)
+    // States
+    const [contacts, setContacts] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
+    const fileRefInput = useRef(null)
+    const [file, setFile] = useState(null)
+    const [contactCount, setContactCount] = useState(0)
+    const [duplicateCount, setDuplicateCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    // Methods
+    const uploadCSV = async () => {
+        try{
+            if(!file) return
+
+            const formData = new FormData()
+            formData.append('file', file)
+            setIsLoading(true)
+
+            const response = await uploadContact(formData)
+
+            if(response?.data){
+                setContacts(response.data.contacts)
+                setDuplicateCount(response.data.stats.contactsWithDuplicates)
+                setContactCount(response.data.stats.totalContacts)
+                setIsLoading(false)
+            }
+        }catch (error) {
+            console.error(error)
+        }
+    }
+
+    return (
+        <>
+            <div>
+                <input type="file" accept=".csv" ref={fileRefInput} onChange={(e) => e.target.files[0] && setFile(e.target.files[0])}/>
+                <button disabled={isLoading} onClick={uploadCSV}>{isLoading ? "Uploading..." : "Upload Contacts"}</button>
+            </div>
+
+
+
+        </>
+    )
 }
 
 export default App
