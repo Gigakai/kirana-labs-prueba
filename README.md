@@ -1,4 +1,4 @@
-# 🛠️ Requisitos Previos
+# Requisitos Previos
 
 Antes de iniciar el proyecto asegúrate de tener:
 
@@ -8,7 +8,7 @@ Antes de iniciar el proyecto asegúrate de tener:
 
 ---
 
-# 🗄️ Configuración de la Base de Datos
+# Configuración de la Base de Datos
 
 
 Crea la base de datos manualmente:
@@ -21,7 +21,7 @@ CREATE DATABASE contact_db;
 
 ---
 
-# 🔧 Variables de Entorno (Backend)
+# Variables de Entorno (Backend)
 
 Crea un archivo **server/.env** con las siguientes claves:
 
